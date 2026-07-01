@@ -1,82 +1,129 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-canvas text-ink">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Archivist Protocol</title>
+    <title>The Archivist Protocol | Mission Control</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .bg-canvas { background-color: #f7f7f4; }
-        .text-ink { color: #26251e; }
-        .cursor-orange { background-color: #f54e00; }
-        .hairline-border { border-color: #e6e5e0; }
-        .surface-card { background-color: #ffffff; }
-        .jetbrains-mono { font-family: 'JetBrains Mono', monospace; }
-        .inter { font-family: 'Inter', sans-serif; }
-        .error-pill { background-color: #cf2d56; }
-        .gold-pill { background-color: #c08532; }
-        .panel { min-height: 200px; }
-    </style>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        canvas: '#f7f7f4',
+                        ink: '#26251e',
+                        primary: '#f54e00',
+                        primaryHover: '#d04200',
+                        surface: '#ffffff',
+                        hairline: '#e6e5e0',
+                        errorBg: '#cf2d56'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="m-0 p-4">
-    <header class="inter text-xl font-semibold mb-6">
-        The Archivist Protocol Mission Control
+<body class="bg-canvas text-ink font-sans min-h-screen">
+
+    <!-- Top Navigation -->
+    <header class="h-16 border-b border-hairline flex items-center px-8 bg-canvas">
+        <h1 class="text-[18px] font-semibold tracking-tight">The Archivist Protocol // Mission Control</h1>
     </header>
 
-    <section class="flex flex-col gap-4">
-        <button id="triggerBtn" class="cursor-orange text-white p-3 rounded-md hover:bg-opacity-90 transition duration-200 shadow-none">
-            Trigger Shadow-Traffic Engine
-        </button>
-
-        <div id="statusPill" class="hidden rounded-full px-4 py-2 text-white text-sm font-medium w-max">
-            <!-- Will show 🚨 DISCREPANCY LOGGED with appropriate class -->
+    <!-- Main Dashboard -->
+    <main class="max-w-6xl mx-auto p-8">
+        
+        <!-- Action Banner -->
+        <div class="bg-surface border border-hairline rounded-[12px] p-8 mb-8 flex flex-col items-center text-center">
+            <h2 class="text-[26px] tracking-tight mb-2 text-ink">Closed Learning Loop Engine</h2>
+            <p class="text-[#5a5852] mb-6 max-w-2xl text-[16px]">Deploy the autonomous shadow-routing validation sequence. The system will dispatch a payload to both legacy and modern architectures, intercept discrepancies, and log lost institutional knowledge.</p>
+            <button id="triggerBtn" class="bg-primary hover:bg-primaryHover text-white font-medium rounded-[8px] px-6 py-3 transition-colors text-[14px]">
+                Trigger Shadow-Traffic Engine
+            </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="surface-card hairline-border border rounded-lg p-4 panel">
-                <h3 class="inter font-medium text-lg mb-2">Legacy Output</h3>
-                <pre id="legacyOutput" class="jetbrains-mono text-sm overflow-auto bg-white p-2 rounded border border-e6e5e0 whitespace-pre-wrap"></pre>
+        <!-- Alert Banner (Hidden by default) -->
+        <div id="alertBox" class="hidden bg-errorBg text-white px-6 py-4 rounded-[8px] mb-8 font-semibold tracking-wide flex items-center justify-between">
+            <span id="alertText">🚨 DISCREPANCY DETECTED: Awaiting system log...</span>
+            <span class="bg-white/20 text-white text-xs px-2 py-1 rounded-full uppercase tracking-widest">Logged to DB</span>
+        </div>
+
+        <!-- Data Streams -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Legacy Panel -->
+            <div class="bg-surface border border-hairline rounded-[12px] overflow-hidden flex flex-col">
+                <div class="bg-[#fafaf7] border-b border-hairline px-4 py-3 font-semibold text-[14px]">
+                    LEGACY CORE STREAM (PostgreSQL)
+                </div>
+                <div class="p-4 flex-grow overflow-auto h-[350px]">
+                    <pre><code id="legacyCode" class="font-mono text-[13px] text-[#5a5852]">Waiting for traffic injection...</code></pre>
+                </div>
             </div>
 
-            <div class="surface-card hairline-border border rounded-lg p-4 panel">
-                <h3 class="inter font-medium text-lg mb-2">Modern Output</h3>
-                <pre id="modernOutput" class="jetbrains-mono text-sm overflow-auto bg-white p-2 rounded border border-e6e5e0 whitespace-pre-wrap"></pre>
+            <!-- Modern Panel -->
+            <div class="bg-surface border border-hairline rounded-[12px] overflow-hidden flex flex-col">
+                <div class="bg-[#fafaf7] border-b border-hairline px-4 py-3 font-semibold text-[14px]">
+                    MODERN ARCHITECTURE (Express.js)
+                </div>
+                <div class="p-4 flex-grow overflow-auto h-[350px]">
+                    <pre><code id="modernCode" class="font-mono text-[13px] text-[#5a5852]">Waiting for traffic injection...</code></pre>
+                </div>
             </div>
         </div>
-    </section>
 
+    </main>
+
+    <!-- The Missing JavaScript Glue -->
     <script>
         document.getElementById('triggerBtn').addEventListener('click', async () => {
-            const legacyOutput = document.getElementById('legacyOutput');
-            const modernOutput = document.getElementById('modernOutput');
-            const statusPill = document.getElementById('statusPill');
+            const btn = document.getElementById('triggerBtn');
+            const legacyBox = document.getElementById('legacyCode');
+            const modernBox = document.getElementById('modernCode');
+            const alertBox = document.getElementById('alertBox');
+            const alertText = document.getElementById('alertText');
 
-            legacyOutput.textContent = 'Fetching...';
-            modernOutput.textContent = 'Fetching...';
-            statusPill.classList.add('hidden');
+            // Set loading state
+            btn.innerText = 'Routing Traffic...';
+            btn.classList.add('opacity-75');
+            legacyBox.innerText = 'Fetching...';
+            modernBox.innerText = 'Fetching...';
+            alertBox.classList.add('hidden');
 
             try {
+                // Hard-wired fetch directly to the Express server route
                 const response = await fetch('/shadow-router');
                 const data = await response.json();
 
-                legacyOutput.textContent = JSON.stringify(data.legacy, null, 2);
-                modernOutput.textContent = JSON.stringify(data.modern, null, 2);
-
-                if (data.discrepancy) {
-                    statusPill.textContent = '🔨 DISCREPANCY LOGGED';
-                    statusPill.className = 'error-pill rounded-full px-4 py-2 text-white text-sm font-medium w-max';
-                    statusPill.classList.remove('hidden');
-                } else if (data.completed) {
-                    statusPill.textContent = '✅ TIMELINE SYNCED';
-                    statusPill.className = 'gold-pill rounded-full px-4 py-2 text-white text-sm font-medium w-max';
-                    statusPill.classList.remove('hidden');
-                }
+                // Format and display the JSON responses
+                legacyBox.innerText = JSON.stringify(data.legacy, null, 4);
+                
+                // We add a slight delay to the modern box to simulate processing time
+                setTimeout(() => {
+                    modernBox.innerText = JSON.stringify(data.modern, null, 4);
+                    
+                    // Trigger the discrepancy alert
+                    if (data.status === "DISCREPANCY_DETECTED") {
+                        alertBox.classList.remove('hidden');
+                        alertText.innerText = `🚨 ${data.status}: ${data.message}`;
+                    }
+                }, 400);
 
             } catch (error) {
-                legacyOutput.textContent = 'Error fetching data: ' + error.message;
-                modernOutput.textContent = 'Error fetching data: ' + error.message;
+                legacyBox.innerText = `System Error: ${error.message}`;
+                modernBox.innerText = `System Error: ${error.message}`;
+                console.error("Fetch failed:", error);
+            } finally {
+                btn.innerText = 'Trigger Shadow-Traffic Engine';
+                btn.classList.remove('opacity-75');
             }
         });
     </script>
 </body>
-</html>s
+</html>
