@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-canvas text-ink">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archivist Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-canvas { background-color: #f7f7f4; }
+        .text-ink { color: #26251e; }
+        .cursor-orange { background-color: #f54e00; }
+        .hairline-border { border-color: #e6e5e0; }
+        .surface-card { background-color: #ffffff; }
+        .jetbrains-mono { font-family: 'JetBrains Mono', monospace; }
+        .inter { font-family: 'Inter', sans-serif; }
+        .error-pill { background-color: #cf2d56; }
+        .gold-pill { background-color: #c08532; }
+        .panel { min-height: 200px; }
+    </style>
+</head>
+<body class="m-0 p-4">
+    <header class="inter text-xl font-semibold mb-6">
+        The Archivist Protocol Mission Control
+    </header>
+
+    <section class="flex flex-col gap-4">
+        <button id="triggerBtn" class="cursor-orange text-white p-3 rounded-md hover:bg-opacity-90 transition duration-200 shadow-none">
+            Trigger Shadow-Traffic Engine
+        </button>
+
+        <div id="statusPill" class="hidden rounded-full px-4 py-2 text-white text-sm font-medium w-max">
+            <!-- Will show 🚨 DISCREPANCY LOGGED with appropriate class -->
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="surface-card hairline-border border rounded-lg p-4 panel">
+                <h3 class="inter font-medium text-lg mb-2">Legacy Output</h3>
+                <pre id="legacyOutput" class="jetbrains-mono text-sm overflow-auto bg-white p-2 rounded border border-e6e5e0 whitespace-pre-wrap"></pre>
+            </div>
+
+            <div class="surface-card hairline-border border rounded-lg p-4 panel">
+                <h3 class="inter font-medium text-lg mb-2">Modern Output</h3>
+                <pre id="modernOutput" class="jetbrains-mono text-sm overflow-auto bg-white p-2 rounded border border-e6e5e0 whitespace-pre-wrap"></pre>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('triggerBtn').addEventListener('click', async () => {
+            const legacyOutput = document.getElementById('legacyOutput');
+            const modernOutput = document.getElementById('modernOutput');
+            const statusPill = document.getElementById('statusPill');
+
+            legacyOutput.textContent = 'Fetching...';
+            modernOutput.textContent = 'Fetching...';
+            statusPill.classList.add('hidden');
+
+            try {
+                const response = await fetch('/shadow-router');
+                const data = await response.json();
+
+                legacyOutput.textContent = JSON.stringify(data.legacy, null, 2);
+                modernOutput.textContent = JSON.stringify(data.modern, null, 2);
+
+                if (data.discrepancy) {
+                    statusPill.textContent = '🔨 DISCREPANCY LOGGED';
+                    statusPill.className = 'error-pill rounded-full px-4 py-2 text-white text-sm font-medium w-max';
+                    statusPill.classList.remove('hidden');
+                } else if (data.completed) {
+                    statusPill.textContent = '✅ TIMELINE SYNCED';
+                    statusPill.className = 'gold-pill rounded-full px-4 py-2 text-white text-sm font-medium w-max';
+                    statusPill.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                legacyOutput.textContent = 'Error fetching data: ' + error.message;
+                modernOutput.textContent = 'Error fetching data: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>s
