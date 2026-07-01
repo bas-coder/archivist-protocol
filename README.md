@@ -1,6 +1,6 @@
 # 🏛️ The Archivist Protocol
 
-[![Live Mission Control](https://img.shields.io/badge/Live_Demo-Mission_Control-f54e00?style=for-the-badge)](YOUR_VERCEL_LINK_HERE)
+[![Live Mission Control](https://archivist-protocol-git-main-bas-coders-projects.vercel.app/)
 [![Demo Video](https://img.shields.io/badge/Watch-Demo_Video-10B981?style=for-the-badge)](YOUR_VIDEO_LINK_HERE)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
