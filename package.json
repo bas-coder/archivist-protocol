@@ -1,0 +1,30 @@
+{
+  "name": "archivist-protocol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bas-coder/archivist-protocol.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bas-coder/archivist-protocol/issues"
+  },
+  "homepage": "https://github.com/bas-coder/archivist-protocol#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "neon-cli": "^0.10.1",
+    "pg": "^8.22.0",
+    "postgres": "^3.4.9",
+    "vercel": "^54.18.6"
+  },
+  "devDependencies": {}
+}
